@@ -45,7 +45,12 @@
         NSUInteger bytesPerRow = CGImageGetBytesPerRow(imageRef);
         NSUInteger bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
         
-        unsigned char *imageData = malloc(bytesPerRow * height);
+        //using malloc does not clear the memory assigned to imageData, so when 
+        //image is converted to raw data, old entries are preserved which makes the 
+        // resulting file containing artifacts, specially if the fill is repeated over 
+        //different images.
+        
+        unsigned char *imageData = calloc(bytesPerRow * height);
         
         CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
         
